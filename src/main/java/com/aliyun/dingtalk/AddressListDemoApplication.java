@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class H5AppAuthDemoApplication {
+public class AddressListDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(H5AppAuthDemoApplication.class, args);
+        SpringApplication.run(AddressListDemoApplication.class, args);
     }
 
 }
