@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * 部门
  * 可以自行添加需要传入的字段
  */
 @Data
