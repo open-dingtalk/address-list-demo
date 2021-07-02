@@ -2,6 +2,7 @@ package com.aliyun.dingtalk.service.impl;
 
 import com.aliyun.dingtalk.config.AppConfig;
 import com.aliyun.dingtalk.constant.UrlConstant;
+import com.aliyun.dingtalk.exception.InvokeDingTalkException;
 import com.aliyun.dingtalk.model.Dept;
 import com.aliyun.dingtalk.model.Role;
 import com.aliyun.dingtalk.model.User;
@@ -55,7 +56,7 @@ public class AddressListServiceImpl implements AddressListService {
         // 企业部门ID和钉钉部门ID映射
         final Map<Integer, Long> deptIdAndDingTalkDeptIdMap = new HashMap<>();
 
-        syncDeptList(deptIdAndDingTalkDeptIdMap, client, accessToken, deptList,null);
+        syncDeptList(deptIdAndDingTalkDeptIdMap, client, accessToken, deptList, null);
 
         return deptIdAndDingTalkDeptIdMap;
     }
@@ -94,22 +95,20 @@ public class AddressListServiceImpl implements AddressListService {
             try {
 
                 OapiV2DepartmentCreateResponse rsp = client.execute(req, accessToken);
-                if (!Objects.isNull(rsp)) {
-                    if (rsp.isSuccess()) {
-                        OapiV2DepartmentCreateResponse.DeptCreateResponse deptCreateResponse = rsp.getResult();
-                        Long dingTalkDeptId = deptCreateResponse.getDeptId();
-                        deptIdAndDingTalkDeptMap.put(dept.getId(), dingTalkDeptId);
-                        if (!CollectionUtils.isEmpty(dept.getChildren())) {
-                            syncDeptList(deptIdAndDingTalkDeptMap, client, accessToken, dept.getChildren(),  dingTalkDeptId);
-                        }
-                    } else {
-                        log.error("sync dept error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
+                if (rsp.isSuccess()) {
+                    OapiV2DepartmentCreateResponse.DeptCreateResponse deptCreateResponse = rsp.getResult();
+                    Long dingTalkDeptId = deptCreateResponse.getDeptId();
+                    deptIdAndDingTalkDeptMap.put(dept.getId(), dingTalkDeptId);
+                    if (!CollectionUtils.isEmpty(dept.getChildren())) {
+                        syncDeptList(deptIdAndDingTalkDeptMap, client, accessToken, dept.getChildren(), dingTalkDeptId);
                     }
                 } else {
-                    log.error("sync dept fail!");
+                    throw new InvokeDingTalkException(rsp.getErrorCode(), rsp.getErrmsg());
                 }
+
             } catch (ApiException e) {
                 e.printStackTrace();
+                throw new InvokeDingTalkException(e.getErrCode(), e.getErrMsg());
             }
         });
     }
@@ -164,18 +163,15 @@ public class AddressListServiceImpl implements AddressListService {
 //            req.setHiredDate(1597573616828L);
             try {
                 OapiV2UserCreateResponse rsp = client.execute(req, accessToken);
-                if (!Objects.isNull(rsp)) {
-                    if (rsp.isSuccess()) {
-                        OapiV2UserCreateResponse.UserCreateResponse result = rsp.getResult();
-                        userList.add(result);
-                    } else {
-                        log.error("sync user error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
-                    }
+                if (rsp.isSuccess()) {
+                    OapiV2UserCreateResponse.UserCreateResponse result = rsp.getResult();
+                    userList.add(result);
                 } else {
-                    log.error("sync user fail!");
+                    throw new InvokeDingTalkException(rsp.getErrorCode(), rsp.getErrmsg());
                 }
             } catch (ApiException e) {
                 e.printStackTrace();
+                throw new InvokeDingTalkException(e.getErrCode(), e.getErrMsg());
             }
 
         });
@@ -184,7 +180,6 @@ public class AddressListServiceImpl implements AddressListService {
 
 
     /**
-     *
      * 同步角色组信息
      *
      * @param roleGroupNameList
@@ -222,18 +217,17 @@ public class AddressListServiceImpl implements AddressListService {
             req.setName(roleGroupName);
             try {
                 OapiRoleAddrolegroupResponse rsp = client.execute(req, accessToken);
-                if (!Objects.isNull(rsp)) {
-                    if (rsp.isSuccess()) {
-                        Long groupId = rsp.getGroupId();
-                        groupNameAndGroupIdMap.put(roleGroupName, groupId);
-                    } else {
-                        log.error("sync role group error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
-                    }
+
+                if (rsp.isSuccess()) {
+                    Long groupId = rsp.getGroupId();
+                    groupNameAndGroupIdMap.put(roleGroupName, groupId);
                 } else {
-                    log.error("sync role group fail!");
+                    throw new InvokeDingTalkException(rsp.getErrorCode(), rsp.getErrmsg());
                 }
+
             } catch (ApiException e) {
                 e.printStackTrace();
+                throw new InvokeDingTalkException(e.getErrCode(), e.getErrMsg());
             }
 
         });
@@ -281,18 +275,15 @@ public class AddressListServiceImpl implements AddressListService {
             req.setGroupId(role.getGroupId());
             try {
                 OapiRoleAddRoleResponse rsp = client.execute(req, accessToken);
-                if (!Objects.isNull(rsp)) {
-                    if (rsp.isSuccess()) {
-                        Long roleId = rsp.getRoleId();
-                        roleNameAndRoleIdMap.put(role.getRoleName(), roleId);
-                    } else {
-                        log.error("sync role error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
-                    }
+                if (rsp.isSuccess()) {
+                    Long roleId = rsp.getRoleId();
+                    roleNameAndRoleIdMap.put(role.getRoleName(), roleId);
                 } else {
-                    log.error("sync role fail!");
+                    throw new InvokeDingTalkException(rsp.getErrorCode(), rsp.getErrmsg());
                 }
             } catch (ApiException e) {
                 e.printStackTrace();
+                throw new InvokeDingTalkException(e.getErrCode(), e.getErrMsg());
             }
         });
         return roleNameAndRoleIdMap;
@@ -317,22 +308,18 @@ public class AddressListServiceImpl implements AddressListService {
         req.setUserIds(userRole.getUserIds());
         try {
             OapiRoleAddrolesforempsResponse rsp = client.execute(req, accessToken);
-            if (!Objects.isNull(rsp)) {
-                if (rsp.isSuccess()) {
-                    return "success";
-                } else {
-                    log.error("sync user role error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
-                }
+            if (rsp.isSuccess()) {
+                return rsp.getBody();
             } else {
-                log.error("sync user role fail!");
+                throw new InvokeDingTalkException(rsp.getErrorCode(), rsp.getErrmsg());
             }
+
         } catch (ApiException e) {
             e.printStackTrace();
+            throw new InvokeDingTalkException(e.getErrCode(), e.getErrMsg());
         }
 
-        return null;
     }
-
 
 
 }

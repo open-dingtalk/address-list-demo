@@ -5,7 +5,7 @@ import com.aliyun.dingtalk.model.Role;
 import com.aliyun.dingtalk.model.User;
 import com.aliyun.dingtalk.model.UserRole;
 import com.aliyun.dingtalk.service.AddressListService;
-import com.aliyun.dingtalk.model.RpcServiceResult;
+import com.aliyun.dingtalk.model.ServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,9 +41,9 @@ public class AddressListController {
      * @return
      */
     @PostMapping("/dept")
-    public RpcServiceResult syncDeptList(@RequestBody List<Dept> deptList) {
+    public ServiceResult syncDeptList(@RequestBody List<Dept> deptList) {
 
-        return RpcServiceResult.getSuccessResult(addressListService.syncDeptList(deptList));
+        return ServiceResult.getSuccessResult(addressListService.syncDeptList(deptList));
 
     }
 
@@ -54,9 +54,9 @@ public class AddressListController {
      * @return
      */
     @PostMapping("/user")
-    public RpcServiceResult syncUsers(@RequestBody List<User> users) {
+    public ServiceResult syncUsers(@RequestBody List<User> users) {
 
-        return RpcServiceResult.getSuccessResult(addressListService.syncUsers(users));
+        return ServiceResult.getSuccessResult(addressListService.syncUsers(users));
 
     }
 
@@ -67,9 +67,9 @@ public class AddressListController {
      * @return
      */
     @PostMapping("/role/group")
-    public RpcServiceResult syncRoleGroupList(@RequestBody List<String> roleGroupNameList) {
+    public ServiceResult syncRoleGroupList(@RequestBody List<String> roleGroupNameList) {
 
-        return RpcServiceResult.getSuccessResult(addressListService.syncRoleGroupList(roleGroupNameList));
+        return ServiceResult.getSuccessResult(addressListService.syncRoleGroupList(roleGroupNameList));
 
     }
 
@@ -80,9 +80,9 @@ public class AddressListController {
      * @return
      */
     @PostMapping("/role")
-    public RpcServiceResult syncRoleList(@RequestBody List<Role> roleList) {
+    public ServiceResult syncRoleList(@RequestBody List<Role> roleList) {
 
-        return RpcServiceResult.getSuccessResult(addressListService.syncRoleList(roleList));
+        return ServiceResult.getSuccessResult(addressListService.syncRoleList(roleList));
 
     }
 
@@ -93,9 +93,9 @@ public class AddressListController {
      * @return
      */
     @PostMapping("/user/role")
-    public RpcServiceResult syncUserRole(@RequestBody UserRole userRole) {
+    public ServiceResult syncUserRole(@RequestBody UserRole userRole) {
 
-        return RpcServiceResult.getSuccessResult(addressListService.syncUserRole(userRole));
+        return ServiceResult.getSuccessResult(addressListService.syncUserRole(userRole));
 
     }
 
