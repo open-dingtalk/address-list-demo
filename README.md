@@ -25,11 +25,11 @@
 
    配置开发管理，参考文档：https://developers.dingtalk.com/document/app/configure-orgapp
 
-   ![image-20210705113544399](/Users/wan/Library/Application Support/typora-user-images/image-20210705113544399.png)
+   ![image-20210705113544399](https://img.alicdn.com/imgextra/i4/O1CN01D9ND4O1JLzu7Agboh_!!6000000001013-2-tps-2878-1076.png)
 
    添加维护通讯录的接口访问权限
 
-   ![image-20210705113646100](/Users/wan/Library/Application Support/typora-user-images/image-20210705113646100.png)
+   ![image-20210705113646100](https://img.alicdn.com/imgextra/i3/O1CN01eHy3Wa1DbflWlRoAN_!!6000000000235-2-tps-2852-1056.png)
 
 ##### 获取H5钉钉应用的参数
 
@@ -62,7 +62,7 @@ https://github.com/open-dingtalk/address-list-demo.git
 
 ### 替换后端应用配置
 
-![image-20210705113421732](/Users/wan/Library/Application Support/typora-user-images/image-20210705113421732.png)
+![image-20210705113421732](https://img.alicdn.com/imgextra/i2/O1CN01S6xCal24U2ntSa1TA_!!6000000007393-2-tps-2376-1266.png)
 
 ### 参考文档
 
